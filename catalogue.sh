@@ -1,37 +1,39 @@
-
-echo "\e[36m>>>>>>>>>>>>>>>>> configuring  Node JS Repos  <<<<<<<<<<<<<\e[0m"
+echo -e "\e[36m>>>>>>>>> Configuring NodeJS repos <<<<<<<<\e[0m"
 curl -sL https://rpm.nodesource.com/setup_lts.x | bash
+
+echo -e "\e[36m>>>>>>>>> Install NodeJS <<<<<<<<\e[0m"
 yum install nodejs -y
-echo "\e[36m>>>>>>>>>>>>>>>>> Install  Node JS   <<<<<<<<<<<<<\e[0m"
-echo "\e[36m>>>>>>>>>>>>>>>>> Add Application User <<<<<<<<<<<<<\e[0m"
+
+echo -e "\e[36m>>>>>>>>> Add Application User <<<<<<<<\e[0m"
 useradd roboshop
-echo "\e[36m>>>>>>>>>>>>>>>>> Create Application Directory <<<<<<<<<<<<<\e[0m"
+
+echo -e "\e[36m>>>>>>>>> Create Application Directory <<<<<<<<\e[0m"
 rm -rf /app
 mkdir /app
 
-echo "\e[36m>>>>>>>>>>>>>>>>> Download App Content <<<<<<<<<<<<<\e[0m"
+echo -e "\e[36m>>>>>>>>> Download App Content <<<<<<<<\e[0m"
 curl -o /tmp/catalogue.zip https://roboshop-artifacts.s3.amazonaws.com/catalogue.zip
 cd /app
 
-echo "\e[36m>>>>>>>>>>>>>>>>> Unzip App Content <<<<<<<<<<<<<\e[0m"
+echo -e "\e[36m>>>>>>>>> Unzip App Content <<<<<<<<\e[0m"
 unzip /tmp/catalogue.zip
 
-echo "\e[36m>>>>>>>>>>>>>>>>> Install Node JS Dependencies <<<<<<<<<<<<<\e[0m"
+echo -e "\e[36m>>>>>>>>> Install NodeJS Dependencies <<<<<<<<\e[0m"
 npm install
 
-echo "\e[36m>>>>>>>>>>>>>>>>> copy catalogue SystemD file <<<<<<<<<<<<<\e[0m"
-cp catalogue.service /etc/systemd/system/catalogue.service
+echo -e "\e[36m>>>>>>>>> Copy Catalogue SystemD file <<<<<<<<\e[0m"
+cp /home/centos/roboshop-shell/catalogue.service /etc/systemd/system/catalogue.service
 
-echo "\e[36m>>>>>>>>>>>>>>>>> Start Catalogue service <<<<<<<<<<<<<\e[0m"
+echo -e "\e[36m>>>>>>>>> Start Catalogue Service <<<<<<<<\e[0m"
 systemctl daemon-reload
 systemctl enable catalogue
 systemctl restart catalogue
 
-# To load schema we need to install mongodb client.
-echo "\e[36m>>>>>>>>>>>>>>>>> copy mongodb repo <<<<<<<<<<<<<\e[0m"
-cp mongo.repo /etc/yum.repos.d/mongo.repo
+echo -e "\e[36m>>>>>>>>> Copy MongoDB repo <<<<<<<<\e[0m"
+cp /home/centos/roboshop-shell/mongo.repo /etc/yum.repos.d/mongo.repo
 
-echo "\e[36m>>>>>>>>>>>>>>>>> Install mongodb client <<<<<<<<<<<<<\e[0m"
+echo -e "\e[36m>>>>>>>>> Install MongoDB Client <<<<<<<<\e[0m"
 yum install mongodb-org-shell -y
-mongo --host mongodb-dev.kiranbachudevops.online </app/schema/catalogue.js
 
+echo -e "\e[36m>>>>>>>>> Load Schema <<<<<<<<\e[0m"
+mongo --host mongodb-dev.kiranbachudevops.online </app/schema/catalogue.js
