@@ -6,6 +6,6 @@ systemctl enable mongod
 systemctl start mongod
 
 # Edit  the  file to replace 127.0.0.1 to 0.0.0.0 in /etc/mongod.conf
-sed -i -e 's|127.0.0.1|0.0.0.0|' /etc/mongod.conf
+sed -i -e 's|127.0.0.1|0.0.0.0|g' /etc/mongod.conf
 
 
