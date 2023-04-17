@@ -1,21 +1,36 @@
 
+echo "\e[36m>>>>>>>>>>>>>>>>> configuring  Node JS Repos  <<<<<<<<<<<<<\e[0m"
 curl -sL https://rpm.nodesource.com/setup_lts.x | bash
 yum install nodejs -y
+echo "\e[36m>>>>>>>>>>>>>>>>> Install  Node JS   <<<<<<<<<<<<<\e[0m"
+echo "\e[36m>>>>>>>>>>>>>>>>> Add Application User <<<<<<<<<<<<<\e[0m"
 useradd roboshop
+echo "\e[36m>>>>>>>>>>>>>>>>> Create Application Directory <<<<<<<<<<<<<\e[0m"
 mkdir /app
+
+echo "\e[36m>>>>>>>>>>>>>>>>> Download App Content <<<<<<<<<<<<<\e[0m"
 curl -o /tmp/catalogue.zip https://roboshop-artifacts.s3.amazonaws.com/catalogue.zip
 cd /app
+
+echo "\e[36m>>>>>>>>>>>>>>>>> Unzip App Content <<<<<<<<<<<<<\e[0m"
 unzip /tmp/catalogue.zip
 
-cd /app
+echo "\e[36m>>>>>>>>>>>>>>>>> Install Node JS Dependencies <<<<<<<<<<<<<\e[0m"
 npm install
+
+echo "\e[36m>>>>>>>>>>>>>>>>> copy catalogue SystemD file <<<<<<<<<<<<<\e[0m"
 cp catalogue.service /etc/systemd/system/catalogue.service
+
+echo "\e[36m>>>>>>>>>>>>>>>>> Start Catalogue service <<<<<<<<<<<<<\e[0m"
 systemctl daemon-reload
 systemctl enable catalogue
 systemctl restart catalogue
 
 # To load schema we need to install mongodb client.
+echo "\e[36m>>>>>>>>>>>>>>>>> copy mongodb repo <<<<<<<<<<<<<\e[0m"
 cp mongo.repo /etc/yum.repos.d/mongo.repo
+
+echo "\e[36m>>>>>>>>>>>>>>>>> Install mongodb client <<<<<<<<<<<<<\e[0m"
 yum install mongodb-org-shell -y
 mongo --host mongodb-dev.kiranbachudevops.online </app/schema/catalogue.js
 
