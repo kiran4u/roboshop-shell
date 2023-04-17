@@ -12,7 +12,7 @@ npm install
 cp catalogue.service /etc/systemd/system/catalogue.service
 systemctl daemon-reload
 systemctl enable catalogue
-systemctl start catalogue
+systemctl restart catalogue
 
 # To load schema we need to install mongodb client.
 cp mongo.repo /etc/yum.repos.d/mongo.repo
